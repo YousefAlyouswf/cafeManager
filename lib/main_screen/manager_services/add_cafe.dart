@@ -70,128 +70,133 @@ class _AddCafeState extends State<AddCafe> {
       appBar: AppBar(
         title: Text("الإدارة العامة"),
       ),
-      body: Container(
-        child: Column(
-          
-          children: <Widget>[
-             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    radius: 50,
-                    child: ClipOval(
-                      child: SizedBox(
-                        height: 180,
-                        width: 180,
-                        child: (_image != null)
-                            ? Image.file(_image, fit: BoxFit.fill)
-                            : Image.network(
-                                'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/diner-restaurant-logo-design-template-0899ae0c7e72cded1c0abc4fe2d76ae4_screen.jpg?ts=1561476509',
-                                fit: BoxFit.fill,
-                              ),
+      body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Container(
+          child: Column(
+            
+            children: <Widget>[
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 50,
+                        child: ClipOval(
+                          child: SizedBox(
+                            height: 180,
+                            width: 180,
+                            child: (_image != null)
+                                ? Image.file(_image, fit: BoxFit.fill)
+                                : Image.network(
+                                    'https://t4.ftcdn.net/jpg/02/57/34/73/240_F_257347345_xMLYoln5APOlAJcmv8x0FPexLUeRMdzA.jpg',
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
+                        ),
                       ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 18),
+                      child: IconButton(
+                        iconSize: 50,
+                        padding: EdgeInsets.all(0),
+                        icon: Icon(Icons.image),
+                        onPressed: () {
+                          getImage();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        cafeName = val;
+                      });
+                    },
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'أسم المقهى',
+                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
+                ),
+                 Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        city = val;
+                      });
+                    },
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'المدينة ',
+                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 18),
-                  child: IconButton(
-                    iconSize: 50,
-                    padding: EdgeInsets.all(0),
-                    icon: Icon(Icons.image),
-                    onPressed: () {
-                      getImage();
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        lat = val;
+                      });
                     },
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'موقع المقهى LAT',
+                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
                   ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                onChanged: (val) {
-                  setState(() {
-                    cafeName = val;
-                  });
-                },
-                keyboardType: TextInputType.text,
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'أسم المقهى',
-                  hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
-              ),
-            ),
-             Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                onChanged: (val) {
-                  setState(() {
-                    city = val;
-                  });
-                },
-                keyboardType: TextInputType.text,
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'المدينة ',
-                  hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        long = val;
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'موقع المقهى LONG',
+                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                onChanged: (val) {
-                  setState(() {
-                    lat = val;
-                  });
-                },
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'موقع المقهى LAT',
-                  hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                onChanged: (val) {
-                  setState(() {
-                    long = val;
-                  });
-                },
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.end,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'موقع المقهى LONG',
-                  hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
-                ),
-              ),
-            ),
-           
-            RaisedButton(
-                child: Text(
-                  "إنشاء",
-                  style: TextStyle(color: Colors.white, fontSize: 22),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(18.0),
-                ),
-                color: Colors.pink[400],
-                onPressed: () async {
-                  uploadImage();
-                })
-          ],
+             
+                RaisedButton(
+                    child: Text(
+                      "إنشاء",
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(18.0),
+                    ),
+                    color: Colors.pink[400],
+                    onPressed: () async {
+                      uploadImage();
+                    })
+            ],
+          ),
         ),
+              ),
       ),
     );
   }

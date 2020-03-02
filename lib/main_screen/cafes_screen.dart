@@ -1,45 +1,70 @@
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CafesScreen extends StatefulWidget {
+  final String cafeName;
+
+  const CafesScreen({Key key, this.cafeName}) : super(key: key);
   @override
   _CafesScreenState createState() => _CafesScreenState();
 }
 
 class _CafesScreenState extends State<CafesScreen> {
-  String seatNum;
+  List<String> services = ['إظافة جلسات', 'متابعة الجلسات', 'خدمة'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("إدارة المقهى"),
+        title: Text("إدارة مقهى ${widget.cafeName}"),
+        centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          Text("Add seats"),
-
-          TextFormField(
-            keyboardType: TextInputType.number,
-            onChanged: (val){
-              setState(() {
-                seatNum = val;
-              });
+      body: GridView.builder(
+        padding: const EdgeInsets.all(10),
+        itemCount: services.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              if (index == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddSeats(
+                            cafeName: widget.cafeName,
+                          )),
+                );
+              } else if (index == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AllSeats(
+                            cafeName: widget.cafeName,
+                          )),
+                );
+              } else if (index == 2) {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => UsersAccounts()),
+                // );
+              }
             },
-          ),
-          RaisedButton(onPressed: (){
- Firestore.instance.collection('seats').document('العرب').updateData({
-      'allseats': FieldValue.arrayUnion([
-        {
-          'seat': seatNum,
-          'color': 'green',
-          'userid': '',
-          'username': '',
-          'userphone': '',
-        }
-      ]),
-    });
-          }, child: Text("A D D"),)
-        ],
+            child: Card(
+              child: Center(
+                child: Text(
+                  services[index],
+                ),
+              ),
+            ),
+          );
+        },
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
       ),
     );
   }
