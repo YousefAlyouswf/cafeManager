@@ -10,7 +10,7 @@ class AddSeats extends StatefulWidget {
 }
 
 class _AddSeatsState extends State<AddSeats> {
-    String seatNum;
+  String seatNum;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +42,7 @@ class _AddSeatsState extends State<AddSeats> {
                     'userid': '',
                     'username': '',
                     'userphone': '',
+                    'time': '',
                   }
                 ]),
               });

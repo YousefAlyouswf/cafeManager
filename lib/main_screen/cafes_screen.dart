@@ -1,6 +1,6 @@
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
 import 'package:flutter/material.dart';
 
 class CafesScreen extends StatefulWidget {
@@ -44,10 +44,10 @@ class _CafesScreenState extends State<CafesScreen> {
                           )),
                 );
               } else if (index == 2) {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => UsersAccounts()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Services(cafeName: widget.cafeName,)),
+                );
               }
             },
             child: Card(
