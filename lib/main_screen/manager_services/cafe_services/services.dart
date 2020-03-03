@@ -37,7 +37,16 @@ class _ServicesState extends State<Services> {
                       ? Card(
                           child: ListTile(
                             trailing: Text(
-                                service['seatnum'] + "    <-- ${index + 1}"),
+                              "جلسة رقم: " + service['seatnum'],
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            onLongPress: () {
+                              Firestore.instance
+                                  .collection('faham')
+                                  .document(service.documentID)
+                                  .delete();
+                            },
                           ),
                         )
                       : null;

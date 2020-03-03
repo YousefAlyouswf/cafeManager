@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../models/seats_models.dart';
 import 'package:flutter/material.dart';
 
 class AllSeats extends StatefulWidget {
@@ -27,12 +28,28 @@ class _AllSeatsState extends State<AllSeats> {
             if (!snapshot.hasData) {
               return Text("");
             } else {
+              List<SeatsModels> seatsModels = new List();
+              for (var i = 0; i < snapshot.data['allseats'].length; i++) {
+                seatsModels.add(SeatsModels(
+                  snapshot.data['allseats'][i]['color'].toString(),
+                  int.parse(snapshot.data['allseats'][i]['seat']),
+                  snapshot.data['allseats'][i]['userid'],
+                  snapshot.data['allseats'][i]['username'],
+                  snapshot.data['allseats'][i]['userphone'],
+                  snapshot.data['allseats'][i]['time'],
+                ));
+              }
+              seatsModels.sort((a, b) {
+                var r = a.seat.compareTo(b.seat);
+
+                return r;
+              });
               return GridView.builder(
                 itemCount: snapshot.data['allseats'].length,
                 itemBuilder: (context, index) {
                   Color color;
                   bool isbooked = false;
-                  if (snapshot.data['allseats'][index]['color'] == 'green') {
+                  if (    seatsModels[index].color.toString() == 'green') {
                     color = Colors.green;
                     isbooked = true;
                   } else {
@@ -40,16 +57,11 @@ class _AllSeatsState extends State<AllSeats> {
                     isbooked = false;
                   }
                   String idSeat = snapshot.data['allseats'][index].toString();
-                  String seatNum =
-                      snapshot.data['allseats'][index]['seat'].toString();
-                  String userid =
-                      snapshot.data['allseats'][index]['userid'].toString();
-                  String username =
-                      snapshot.data['allseats'][index]['username'].toString();
-                  String userphone =
-                      snapshot.data['allseats'][index]['userphone'].toString();
-                  String time =
-                      snapshot.data['allseats'][index]['time'].toString();
+                  String seatNum = seatsModels[index].seat.toString();
+                  String userid = seatsModels[index].userID.toString();
+                  String username = seatsModels[index].userName.toString();
+                  String userphone = seatsModels[index].userPhone.toString();
+                  String time = seatsModels[index].time.toString();
                   return InkWell(
                     onTap: isbooked
                         ? null
@@ -166,7 +178,7 @@ class _AllSeatsState extends State<AllSeats> {
                       padding: const EdgeInsets.all(15),
                       child: Center(
                         child: Text(
-                          snapshot.data['allseats'][index]['seat'].toString(),
+                          seatsModels[index].seat.toString(),
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),

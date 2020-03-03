@@ -12,7 +12,7 @@ class CafesScreen extends StatefulWidget {
 }
 
 class _CafesScreenState extends State<CafesScreen> {
-  List<String> services = ['إظافة جلسات', 'متابعة الجلسات', 'خدمة'];
+  List<String> services = ['إظافة جلسات', 'متابعة الجلسات', 'خدمة', 'إظافة طلبات'];
 
   @override
   Widget build(BuildContext context) {
