@@ -1,3 +1,4 @@
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_order.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
@@ -47,6 +48,12 @@ class _CafesScreenState extends State<CafesScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Services(cafeName: widget.cafeName,)),
+                );
+              }
+              else if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddOrders(cafeName: widget.cafeName,)),
                 );
               }
             },
