@@ -1,11 +1,15 @@
 import 'package:cafe_manager/login/login.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_order.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_account.dart';
+import 'package:cafe_manager/main_screen/manager_services/cafe_services/daelete_account.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/order_update.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'manager_services/cafe_services/code_change.dart';
 
 class CafesScreen extends StatefulWidget {
   final String cafeName;
@@ -22,6 +26,9 @@ class _CafesScreenState extends State<CafesScreen> {
     'إظافة جلسات',
     'إظافة طلبات',
     'حذف الطلبات',
+    'تغيير الرمز',
+    'إظافة حساب',
+    'حذف حساب',
   ];
   Color cardColor;
   @override
@@ -36,13 +43,13 @@ class _CafesScreenState extends State<CafesScreen> {
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString("cafeName", null);
-                 Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) {
-                              return Login();
-                            },
-                          ),
-                        );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return Login();
+                    },
+                  ),
+                );
               })
         ],
       ),
@@ -103,6 +110,30 @@ class _CafesScreenState extends State<CafesScreen> {
                       cafeName: widget.cafeName,
                     ),
                   ),
+                );
+              } else if (index == 5) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CodeChange(
+                      cafeName: widget.cafeName,
+                    ),
+                  ),
+                );
+              } else if (index == 6) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddAccount(cafeName: widget.cafeName)),
+                );
+              }
+               else if (index == 7) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DeleteAcount(cafeName: widget.cafeName)),
                 );
               }
             },

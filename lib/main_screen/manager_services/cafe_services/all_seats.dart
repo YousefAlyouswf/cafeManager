@@ -49,7 +49,7 @@ class _AllSeatsState extends State<AllSeats> {
                 itemBuilder: (context, index) {
                   Color color;
                   bool isbooked = false;
-                  if (    seatsModels[index].color.toString() == 'green') {
+                  if (seatsModels[index].color.toString() == 'green') {
                     color = Colors.green;
                     isbooked = true;
                   } else {
@@ -124,8 +124,8 @@ class _AllSeatsState extends State<AllSeats> {
                                                   size: 48,
                                                   color: Colors.red,
                                                 ),
-                                                onPressed: () {
-                                                  Firestore.instance
+                                                onPressed: () async {
+                                                  await Firestore.instance
                                                       .collection('seats')
                                                       .document(widget.cafeName)
                                                       .updateData({
@@ -141,7 +141,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                       }
                                                     ]),
                                                   });
-                                                  Firestore.instance
+                                                  await Firestore.instance
                                                       .collection('seats')
                                                       .document(widget.cafeName)
                                                       .updateData({
@@ -157,13 +157,36 @@ class _AllSeatsState extends State<AllSeats> {
                                                       }
                                                     ]),
                                                   });
-                                                  Firestore.instance
+                                                  await Firestore.instance
                                                       .collection('users')
                                                       .document(userid)
                                                       .updateData({
                                                     'booked': '',
                                                     'cafename': '',
                                                     'seatid': '',
+                                                  });
+
+                                                  final QuerySnapshot result =
+                                                      await Firestore.instance
+                                                          .collection('faham')
+                                                          .getDocuments();
+                                                  final List<DocumentSnapshot>
+                                                      documents =
+                                                      result.documents;
+                                                  documents.forEach((data) {
+                                                    String cafeNameOrder =
+                                                        data['cafename'];
+                                                    String seatOrder =
+                                                        data['seatnum'];
+                                                    if (cafeNameOrder ==
+                                                            widget.cafeName &&
+                                                        seatOrder == seatNum) {
+                                                      Firestore.instance
+                                                          .collection('faham')
+                                                          .document(
+                                                              data.documentID)
+                                                          .delete();
+                                                    }
                                                   });
                                                   Navigator.pop(context);
                                                 })
