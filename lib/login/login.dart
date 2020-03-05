@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cafe_manager/main_screen/main_screen.dart';
 import 'package:cafe_manager/main_screen/cafes_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -55,7 +56,8 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'كلمة المرور',
-                    hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    hintStyle:
+                        TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                   ),
                 ),
               ),
@@ -73,6 +75,9 @@ class _LoginState extends State<Login> {
                       level = f['cafe'];
                     });
                     if (documents.length == 1) {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setString("cafeName", level);
                       if (level == 'مدير') {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -85,7 +90,9 @@ class _LoginState extends State<Login> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) {
-                              return CafesScreen(cafeName: level,);
+                              return CafesScreen(
+                                cafeName: level,
+                              );
                             },
                           ),
                         );

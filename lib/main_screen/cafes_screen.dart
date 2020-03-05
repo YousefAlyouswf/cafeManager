@@ -1,9 +1,11 @@
+import 'package:cafe_manager/login/login.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_order.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/order_update.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CafesScreen extends StatefulWidget {
   final String cafeName;
@@ -28,6 +30,21 @@ class _CafesScreenState extends State<CafesScreen> {
       appBar: AppBar(
         title: Text("إدارة مقهى ${widget.cafeName}"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString("cafeName", null);
+                 Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return Login();
+                            },
+                          ),
+                        );
+              })
+        ],
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
@@ -35,10 +52,10 @@ class _CafesScreenState extends State<CafesScreen> {
         itemBuilder: (context, index) {
           if (index == 0) {
             cardColor = Colors.red[300];
-          }else if(index==1){
+          } else if (index == 1) {
             cardColor = Colors.red[300];
           } else {
-            cardColor=Colors.grey;
+            cardColor = Colors.grey;
           }
           return InkWell(
             onTap: () {
