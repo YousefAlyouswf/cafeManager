@@ -19,7 +19,7 @@ class _CafesScreenState extends State<CafesScreen> {
     'متابعة الجلسات',
     'إظافة جلسات',
     'إظافة طلبات',
-    'تعديل الطلبات',
+    'حذف الطلبات',
   ];
   Color cardColor;
   @override
