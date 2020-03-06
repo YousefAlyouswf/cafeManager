@@ -140,7 +140,8 @@ class _AllSeatsState extends State<AllSeats> {
                                                         'userid': userid,
                                                         'username': username,
                                                         'userphone': userphone,
-                                                        'time': time
+                                                        'time': time,
+                                                        'worker': widget.phone,
                                                       }
                                                     ]),
                                                   });
@@ -157,6 +158,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                         'username': '',
                                                         'userphone': '',
                                                         'time': '',
+                                                        'worker': widget.phone,
                                                       }
                                                     ]),
                                                   });
