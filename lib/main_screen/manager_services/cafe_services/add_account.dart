@@ -13,6 +13,8 @@ class _AddAcountState extends State<AddAccount> {
   String name;
   String phone;
   String password;
+
+  String errMsg;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,22 +87,44 @@ class _AddAcountState extends State<AddAccount> {
                     ),
                     color: Colors.pink[400],
                     onPressed: () async {
-                      await Firestore.instance.collection("manager").add({
-                        'name': name,
-                        'cafe': widget.cafeName,
-                        'password': password,
-                        'phone': phone,
+                      final QuerySnapshot result = await Firestore.instance
+                          .collection('manager')
+                          .getDocuments();
+                      final List<DocumentSnapshot> documents = result.documents;
+                      documents.forEach((data) {
+                        if (data['phone'] == phone) {
+                          errMsg = 'رقم الجوال مسجل من قبل';
+                        }
                       });
-                      SnackBar mySnackBar = SnackBar(
-                        content: Text(
-                          "تم بنجاح",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        backgroundColor: Colors.green,
-                        duration: const Duration(milliseconds: 500),
-                      );
-                      Scaffold.of(context).showSnackBar(mySnackBar);
+                      if (errMsg == null) {
+                        await Firestore.instance.collection("manager").add({
+                          'name': name,
+                          'cafe': widget.cafeName,
+                          'password': password,
+                          'phone': phone,
+                        });
+                        SnackBar mySnackBar = SnackBar(
+                          content: Text(
+                            "تم بنجاح",
+                            textAlign: TextAlign.end,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          backgroundColor: Colors.green,
+                          duration: const Duration(milliseconds: 500),
+                        );
+                        Scaffold.of(context).showSnackBar(mySnackBar);
+                      } else {
+                        SnackBar mySnackBar = SnackBar(
+                          content: Text(
+                           errMsg,
+                            textAlign: TextAlign.end,
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          backgroundColor: Colors.red,
+                          duration: const Duration(milliseconds: 1500),
+                        );
+                        Scaffold.of(context).showSnackBar(mySnackBar);
+                      }
                     },
                   );
                 },

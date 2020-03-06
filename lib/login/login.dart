@@ -78,6 +78,7 @@ class _LoginState extends State<Login> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString("cafeName", level);
+                      prefs.setString("phone", phone);
                       if (level == 'مدير') {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -92,6 +93,7 @@ class _LoginState extends State<Login> {
                             builder: (_) {
                               return CafesScreen(
                                 cafeName: level,
+                                phone: phone,
                               );
                             },
                           ),

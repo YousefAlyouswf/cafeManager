@@ -14,10 +14,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String cafeName;
-
+  String phone;
   Future<String> isLogined() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String isLogin = prefs.getString('cafeName');
+    phone = prefs.getString('phone');
     return isLogin;
   }
 
@@ -42,6 +43,7 @@ class _MyAppState extends State<MyApp> {
           ? Login()
           : CafesScreen(
               cafeName: cafeName,
+              phone: phone,
             ),
     );
   }

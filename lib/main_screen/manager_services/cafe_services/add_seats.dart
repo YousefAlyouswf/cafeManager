@@ -12,6 +12,7 @@ class AddSeats extends StatefulWidget {
 class _AddSeatsState extends State<AddSeats> {
   String seatNum;
   String msgErr;
+  String user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +38,44 @@ class _AddSeatsState extends State<AddSeats> {
                 });
               },
             ),
+            StreamBuilder(
+                stream: Firestore.instance
+                    .collection('manager')
+                    .where('cafe', isEqualTo: widget.cafeName)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Text('Loading...');
+                  } else {
+                    List<DropdownMenuItem> users = [];
+                    for (var i = 0; i < snapshot.data.documents.length; i++) {
+                      users.add(
+                        DropdownMenuItem(
+                          child: Text(snapshot.data.documents[i]['name'] +
+                              " => " +
+                              snapshot.data.documents[i]['phone']),
+                          value: snapshot.data.documents[i]['phone'],
+                        ),
+                      );
+                    }
+                    return DropdownButton(
+                      items: users,
+                      onChanged: (value) {
+                        setState(() {
+                          user = value;
+                        });
+                      },
+                      value: user,
+                      elevation: 2,
+                      isDense: true,
+                      iconSize: 40.0,
+                      hint: Text(
+                        "أختر أسم الموظف",
+                        style: TextStyle(),
+                      ),
+                    );
+                  }
+                }),
             Builder(
               builder: (BuildContext context) {
                 return RaisedButton(
@@ -58,6 +97,7 @@ class _AddSeatsState extends State<AddSeats> {
                             'username': '',
                             'userphone': '',
                             'time': '',
+                            'worker': user,
                           }
                         ]),
                       });

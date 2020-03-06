@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class AllSeats extends StatefulWidget {
   final String cafeName;
-
-  const AllSeats({Key key, this.cafeName}) : super(key: key);
+  final String phone;
+  const AllSeats({Key key, this.cafeName, this.phone}) : super(key: key);
   @override
   _AllSeatsState createState() => _AllSeatsState();
 }
@@ -30,14 +30,17 @@ class _AllSeatsState extends State<AllSeats> {
             } else {
               List<SeatsModels> seatsModels = new List();
               for (var i = 0; i < snapshot.data['allseats'].length; i++) {
-                seatsModels.add(SeatsModels(
-                  snapshot.data['allseats'][i]['color'].toString(),
-                  int.parse(snapshot.data['allseats'][i]['seat']),
-                  snapshot.data['allseats'][i]['userid'],
-                  snapshot.data['allseats'][i]['username'],
-                  snapshot.data['allseats'][i]['userphone'],
-                  snapshot.data['allseats'][i]['time'],
-                ));
+                if (snapshot.data['allseats'][i]['worker'] == widget.phone) {
+                  seatsModels.add(SeatsModels(
+                    snapshot.data['allseats'][i]['color'].toString(),
+                    int.parse(snapshot.data['allseats'][i]['seat']),
+                    snapshot.data['allseats'][i]['userid'],
+                    snapshot.data['allseats'][i]['username'],
+                    snapshot.data['allseats'][i]['userphone'],
+                    snapshot.data['allseats'][i]['time'],
+                    snapshot.data['allseats'][i]['worker'],
+                  ));
+                }
               }
               seatsModels.sort((a, b) {
                 var r = a.seat.compareTo(b.seat);
@@ -45,7 +48,7 @@ class _AllSeatsState extends State<AllSeats> {
                 return r;
               });
               return GridView.builder(
-                itemCount: snapshot.data['allseats'].length,
+                itemCount: seatsModels.length,
                 itemBuilder: (context, index) {
                   Color color;
                   bool isbooked = false;

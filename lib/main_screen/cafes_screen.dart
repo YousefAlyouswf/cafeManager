@@ -13,8 +13,8 @@ import 'manager_services/cafe_services/code_change.dart';
 
 class CafesScreen extends StatefulWidget {
   final String cafeName;
-
-  const CafesScreen({Key key, this.cafeName}) : super(key: key);
+  final String phone;
+  const CafesScreen({Key key, this.cafeName, this.phone}) : super(key: key);
   @override
   _CafesScreenState createState() => _CafesScreenState();
 }
@@ -43,6 +43,7 @@ class _CafesScreenState extends State<CafesScreen> {
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString("cafeName", null);
+                prefs.setString('phone', null);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) {
@@ -81,6 +82,7 @@ class _CafesScreenState extends State<CafesScreen> {
                   MaterialPageRoute(
                     builder: (context) => AllSeats(
                       cafeName: widget.cafeName,
+                      phone: widget.phone,
                     ),
                   ),
                 );
@@ -127,8 +129,7 @@ class _CafesScreenState extends State<CafesScreen> {
                       builder: (context) =>
                           AddAccount(cafeName: widget.cafeName)),
                 );
-              }
-               else if (index == 7) {
+              } else if (index == 7) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
