@@ -1,27 +1,60 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cafe_manager/models/worker_seats.dart';
 import 'package:flutter/material.dart';
 
-class DeleteAcount extends StatelessWidget {
+class DeleteAcount extends StatefulWidget {
   final String cafeName;
 
-  const DeleteAcount({Key key, this.cafeName}) : super(key: key);
+  DeleteAcount({
+    Key key,
+    this.cafeName,
+  }) : super(key: key);
+
+  @override
+  _DeleteAcountState createState() => _DeleteAcountState();
+}
+
+class _DeleteAcountState extends State<DeleteAcount> {
+  List<WorkerSeats> seatsList = new List();
+
+  void seats() async {
+    final QuerySnapshot result =
+        await Firestore.instance.collection('seats').getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    documents.forEach((data) {
+      if (data.documentID == widget.cafeName) {
+        for (var i = 0; i < data['allseats'].length; i++) {
+          seatsList.add(WorkerSeats(
+              data['allseats'][i]['seat'], data['allseats'][i]['worker']));
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    seats();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("حذف حساب"),
+        title: Text("معلومات الموظفين"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder(
           stream: Firestore.instance
               .collection('manager')
-              .where('cafe', isEqualTo: cafeName)
+              .where('cafe', isEqualTo: widget.cafeName)
               .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Text("");
             } else {
+              print(seatsList);
               return ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
@@ -29,13 +62,19 @@ class DeleteAcount extends StatelessWidget {
 
                   return InkWell(
                     onTap: () async {
+                      List<String> seatThisWorker = new List();
+                      for (var i = 0; i < seatsList.length; i++) {
+                        if (seatsList[i].phone == service['phone']) {
+                          seatThisWorker.add(seatsList[i].seat);
+                        }
+                      }
                       showBottomSheet(
                           context: context,
                           builder: (context) => Container(
-                                color: Colors.black12,
+                                color: Colors.blue[100],
                                 width: double.infinity,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.3,
+                                    MediaQuery.of(context).size.height * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.all(24.0),
                                   child: Column(
@@ -45,7 +84,7 @@ class DeleteAcount extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          service['name'],
+                                          "الأسم " + service['name'],
                                           textDirection: TextDirection.rtl,
                                           style: TextStyle(fontSize: 18),
                                         ),
@@ -53,7 +92,7 @@ class DeleteAcount extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          service['phone'],
+                                          "الجوال " + service['phone'],
                                           textDirection: TextDirection.rtl,
                                           style: TextStyle(fontSize: 18),
                                         ),
@@ -61,9 +100,32 @@ class DeleteAcount extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          service['password'],
+                                          "كلمة المرور " + service['password'],
                                           textDirection: TextDirection.rtl,
                                           style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "الجلسات" ,
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: GridView.builder(
+                                          itemCount: seatThisWorker.length,
+                                          itemBuilder: (context, index) {
+                                            return Text(seatThisWorker[index]);
+                                          },
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 10,
+                                            childAspectRatio: 3 / 2,
+                                            crossAxisSpacing: 10,
+                                            mainAxisSpacing: 10,
+                                          ),
                                         ),
                                       ),
                                       IconButton(
@@ -95,8 +157,8 @@ class DeleteAcount extends StatelessWidget {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("الاسم "+
-                                  service['name'],
+                                child: Text(
+                                  "الاسم " + service['name'],
                                   textDirection: TextDirection.rtl,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
@@ -107,8 +169,8 @@ class DeleteAcount extends StatelessWidget {
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("الجوال "+
-                                  service['phone'],
+                                child: Text(
+                                  "الجوال " + service['phone'],
                                   textDirection: TextDirection.rtl,
                                   style: TextStyle(
                                     fontSize: 15,

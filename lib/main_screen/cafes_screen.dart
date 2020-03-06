@@ -28,7 +28,7 @@ class _CafesScreenState extends State<CafesScreen> {
     'حذف الطلبات',
     'تغيير الرمز',
     'إظافة حساب',
-    'حذف حساب',
+    'معلومات الموظفين',
   ];
   Color cardColor;
   @override
