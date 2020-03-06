@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class Services extends StatefulWidget {
   final String cafeName;
-
-  const Services({Key key, this.cafeName}) : super(key: key);
+  final String phone;
+  const Services({Key key, this.cafeName, this.phone}) : super(key: key);
   @override
   _ServicesState createState() => _ServicesState();
 }
@@ -33,7 +33,8 @@ class _ServicesState extends State<Services> {
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot service = snapshot.data.documents[index];
-                  return service['cafename'] == widget.cafeName
+                  return service['cafename'] == widget.cafeName &&
+                          service['worker'] == widget.phone
                       ? Card(
                           child: ListTile(
                             trailing: Text(

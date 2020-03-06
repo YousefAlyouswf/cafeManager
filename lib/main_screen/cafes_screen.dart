@@ -73,6 +73,7 @@ class _CafesScreenState extends State<CafesScreen> {
                   MaterialPageRoute(
                     builder: (context) => Services(
                       cafeName: widget.cafeName,
+                      phone: widget.phone,
                     ),
                   ),
                 );
