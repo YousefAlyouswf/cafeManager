@@ -8,7 +8,7 @@ import 'package:cafe_manager/main_screen/manager_services/cafe_services/order_up
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'manager_services/cafe_services/code_change.dart';
 
 class CafesScreen extends StatefulWidget {
@@ -31,11 +31,18 @@ class _CafesScreenState extends State<CafesScreen> {
     'معلومات الموظفين',
   ];
   Color cardColor;
+
+  final FirebaseMessaging _messaging = FirebaseMessaging();
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("إدارة مقهى ${widget.cafeName}"),
+        title: Text("مقهى ${widget.cafeName} ${widget.phone}"),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -44,6 +51,7 @@ class _CafesScreenState extends State<CafesScreen> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString("cafeName", null);
                 prefs.setString('phone', null);
+                prefs.setString('userID', null);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) {

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cafe_manager/main_screen/main_screen.dart';
 import 'package:cafe_manager/main_screen/cafes_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -65,6 +66,7 @@ class _LoginState extends State<Login> {
                   child: Text("دخول"),
                   onPressed: () async {
                     String level;
+                    String userID;
                     final QuerySnapshot userinfo = await Firestore.instance
                         .collection('manager')
                         .where("password", isEqualTo: password)
@@ -73,12 +75,14 @@ class _LoginState extends State<Login> {
                     final List<DocumentSnapshot> documents = userinfo.documents;
                     documents.forEach((f) {
                       level = f['cafe'];
+                      userID = f.documentID;
                     });
                     if (documents.length == 1) {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString("cafeName", level);
                       prefs.setString("phone", phone);
+                      prefs.setString('userID', userID);
                       if (level == 'مدير') {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -88,6 +92,31 @@ class _LoginState extends State<Login> {
                           ),
                         );
                       } else {
+//-------------- For firebase notifications
+
+                        FirebaseMessaging().requestNotificationPermissions();
+
+                        FirebaseMessaging().configure(
+                            onMessage: (Map<String, dynamic> message) {
+                          return;
+                        }, onResume: (Map<String, dynamic> message) {
+                          print('onResume: $message');
+                          return;
+                        }, onLaunch: (Map<String, dynamic> message) {
+                          print('onLaunch: $message');
+                          return;
+                        });
+
+                        FirebaseMessaging().getToken().then((token) {
+                          print('token: $token');
+                          Firestore.instance
+                              .collection('manager')
+                              .document(userID)
+                              .updateData({'pushToken': token});
+                        }).catchError((err) {});
+
+//-----------------END
+
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) {

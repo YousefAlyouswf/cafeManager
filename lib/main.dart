@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login/login.dart';
@@ -18,7 +20,31 @@ class _MyAppState extends State<MyApp> {
   Future<String> isLogined() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String isLogin = prefs.getString('cafeName');
+    String userID = prefs.getString('userID');
     phone = prefs.getString('phone');
+    //-------------- For firebase notifications
+
+    FirebaseMessaging().requestNotificationPermissions();
+
+    FirebaseMessaging().configure(onMessage: (Map<String, dynamic> message) {
+      return;
+    }, onResume: (Map<String, dynamic> message) {
+      print('onResume: $message');
+      return;
+    }, onLaunch: (Map<String, dynamic> message) {
+      print('onLaunch: $message');
+      return;
+    });
+
+    FirebaseMessaging().getToken().then((token) {
+      print('token: $token');
+      Firestore.instance
+          .collection('manager')
+          .document(userID)
+          .updateData({'pushToken': token});
+    }).catchError((err) {});
+
+//-----------------END
     return isLogin;
   }
 
