@@ -10,12 +10,7 @@ class Services extends StatefulWidget {
 }
 
 class _ServicesState extends State<Services> {
-
-
-
-
- 
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +33,6 @@ class _ServicesState extends State<Services> {
               return ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
-           
                   DocumentSnapshot service = snapshot.data.documents[index];
                   return service['cafename'] == widget.cafeName &&
                           service['worker'] == widget.phone

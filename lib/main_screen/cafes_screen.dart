@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cafe_manager/login/login.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_order.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/add_seats.dart';
@@ -6,9 +8,9 @@ import 'package:cafe_manager/main_screen/manager_services/cafe_services/daelete_
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/all_seats.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/order_update.dart';
 import 'package:cafe_manager/main_screen/manager_services/cafe_services/services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'manager_services/cafe_services/code_change.dart';
 
 class CafesScreen extends StatefulWidget {
@@ -20,6 +22,62 @@ class CafesScreen extends StatefulWidget {
 }
 
 class _CafesScreenState extends State<CafesScreen> {
+  FirebaseMessaging _firebaseMessaging;
+
+  void setUpFirebase() {
+    _firebaseMessaging = FirebaseMessaging();
+    firebaseCloudMessaging_Listeners();
+  }
+
+  void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {},
+      onResume: (Map<String, dynamic> message) async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Services(
+              cafeName: widget.cafeName,
+              phone: widget.phone,
+            ),
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Services(
+              cafeName: widget.cafeName,
+              phone: widget.phone,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setUpFirebase();
+  }
+
   List<String> services = [
     'خدمة',
     'متابعة الجلسات',
@@ -31,12 +89,6 @@ class _CafesScreenState extends State<CafesScreen> {
     'معلومات الموظفين',
   ];
   Color cardColor;
-
-  final FirebaseMessaging _messaging = FirebaseMessaging();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
