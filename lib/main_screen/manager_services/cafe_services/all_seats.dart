@@ -11,8 +11,6 @@ class AllSeats extends StatefulWidget {
 }
 
 class _AllSeatsState extends State<AllSeats> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +59,7 @@ class _AllSeatsState extends State<AllSeats> {
                     color = Colors.grey;
                     isbooked = false;
                   }
-                  String idSeat = snapshot.data['allseats'][index].toString();
+
                   String seatNum = seatsModels[index].seat.toString();
                   String userid = seatsModels[index].userID.toString();
                   String username = seatsModels[index].userName.toString();
@@ -69,118 +67,192 @@ class _AllSeatsState extends State<AllSeats> {
                   String time = seatsModels[index].time.toString();
                   return InkWell(
                     onTap: isbooked
-                        ? null
+                        ? () async {
+                            await Firestore.instance
+                                .collection('seats')
+                                .document(widget.cafeName)
+                                .updateData({
+                              'allseats': FieldValue.arrayRemove([
+                                {
+                                  'seat': seatNum,
+                                  'color': 'green',
+                                  'userid': '',
+                                  'username': '',
+                                  'userphone': '',
+                                  'time': '',
+                                  'worker': widget.phone,
+                                }
+                              ]),
+                            });
+                            await Firestore.instance
+                                .collection('seats')
+                                .document(widget.cafeName)
+                                .updateData({
+                              'allseats': FieldValue.arrayUnion([
+                                {
+                                  'seat': seatNum,
+                                  'color': 'grey',
+                                  'userid': 'تم حجزها من الموظف',
+                                  'username': 'تم حجزها من الموظف',
+                                  'userphone': widget.phone,
+                                  'time': '',
+                                  'worker': widget.phone,
+                                }
+                              ]),
+                            });
+                          }
                         : () async {
                             showBottomSheet(
-                                context: context,
-                                builder: (context) => Container(
-                                      color: Colors.black12,
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.6,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(32.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Seat: " + seatNum,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24),
+                              context: context,
+                              builder: (context) => Container(
+                                color: Colors.transparent,
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(32.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "رقم الجلسة: " + seatNum,
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "الأسم: " + username,
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "الجوال: " + userphone,
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "الوقت: " + time,
+                                          textDirection: TextDirection.rtl,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 24),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Center(
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.delete_forever,
+                                              size: 55,
+                                              color: Colors.red,
                                             ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              "Name: " + username,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              "Phone: " + userphone,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              "Time: " + time,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  Icons.delete,
-                                                  size: 48,
-                                                  color: Colors.red,
-                                                ),
-                                                onPressed: () async {
-                                                  await Firestore.instance
-                                                      .collection('seats')
-                                                      .document(widget.cafeName)
-                                                      .updateData({
-                                                    'allseats':
-                                                        FieldValue.arrayRemove([
-                                                      {
-                                                        'seat': seatNum,
-                                                        'color': 'grey',
-                                                        'userid': userid,
-                                                        'username': username,
-                                                        'userphone': userphone,
-                                                        'time': time,
-                                                        'worker': widget.phone,
-                                                      }
-                                                    ]),
-                                                  });
-                                                  await Firestore.instance
-                                                      .collection('seats')
-                                                      .document(widget.cafeName)
-                                                      .updateData({
-                                                    'allseats':
-                                                        FieldValue.arrayUnion([
-                                                      {
-                                                        'seat': seatNum,
-                                                        'color': 'green',
-                                                        'userid': '',
-                                                        'username': '',
-                                                        'userphone': '',
-                                                        'time': '',
-                                                        'worker': widget.phone,
-                                                      }
-                                                    ]),
-                                                  });
-                                                  await Firestore.instance
-                                                      .collection('users')
-                                                      .document(userid)
-                                                      .updateData({
-                                                    'booked': '',
-                                                    'cafename': '',
-                                                    'seatid': '',
-                                                  });
+                                            onPressed: () async {
+                                              if (userphone == widget.phone) {
+                                                await Firestore.instance
+                                                    .collection('seats')
+                                                    .document(widget.cafeName)
+                                                    .updateData({
+                                                  'allseats':
+                                                      FieldValue.arrayRemove([
+                                                    {
+                                                      'seat': seatNum,
+                                                      'color': 'grey',
+                                                      'userid': userid,
+                                                      'username': username,
+                                                      'userphone': userphone,
+                                                      'time': time,
+                                                      'worker': widget.phone,
+                                                    }
+                                                  ]),
+                                                });
+                                                await Firestore.instance
+                                                    .collection('seats')
+                                                    .document(widget.cafeName)
+                                                    .updateData({
+                                                  'allseats':
+                                                      FieldValue.arrayUnion([
+                                                    {
+                                                      'seat': seatNum,
+                                                      'color': 'green',
+                                                      'userid': '',
+                                                      'username': '',
+                                                      'userphone': '',
+                                                      'time': '',
+                                                      'worker': widget.phone,
+                                                    }
+                                                  ]),
+                                                });
+                                              } else {
+                                                await Firestore.instance
+                                                    .collection('seats')
+                                                    .document(widget.cafeName)
+                                                    .updateData({
+                                                  'allseats':
+                                                      FieldValue.arrayRemove([
+                                                    {
+                                                      'seat': seatNum,
+                                                      'color': 'grey',
+                                                      'userid': userid,
+                                                      'username': username,
+                                                      'userphone': userphone,
+                                                      'time': time,
+                                                      'worker': widget.phone,
+                                                    }
+                                                  ]),
+                                                });
+                                                await Firestore.instance
+                                                    .collection('seats')
+                                                    .document(widget.cafeName)
+                                                    .updateData({
+                                                  'allseats':
+                                                      FieldValue.arrayUnion([
+                                                    {
+                                                      'seat': seatNum,
+                                                      'color': 'green',
+                                                      'userid': '',
+                                                      'username': '',
+                                                      'userphone': '',
+                                                      'time': '',
+                                                      'worker': widget.phone,
+                                                    }
+                                                  ]),
+                                                });
+                                                await Firestore.instance
+                                                    .collection('users')
+                                                    .document(userid)
+                                                    .updateData({
+                                                  'booked': '',
+                                                  'cafename': '',
+                                                  'seatid': '',
+                                                });
 
-                                                  final QuerySnapshot result =
-                                                      await Firestore.instance
-                                                          .collection('faham')
-                                                          .getDocuments();
-                                                  final List<DocumentSnapshot>
-                                                      documents =
-                                                      result.documents;
-                                                  documents.forEach((data) {
+                                                final QuerySnapshot result =
+                                                    await Firestore.instance
+                                                        .collection('faham')
+                                                        .getDocuments();
+                                                final List<DocumentSnapshot>
+                                                    documents = result.documents;
+                                                documents.forEach(
+                                                  (data) {
                                                     String cafeNameOrder =
                                                         data['cafename'];
                                                     String seatOrder =
@@ -194,13 +266,20 @@ class _AllSeatsState extends State<AllSeats> {
                                                               data.documentID)
                                                           .delete();
                                                     }
-                                                  });
-                                                  Navigator.pop(context);
-                                                })
-                                          ],
-                                        ),
-                                      ),
-                                    ));
+                                                  },
+                                                );
+                                              }
+
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                     splashColor: Colors.purple,
                     borderRadius: BorderRadius.circular(15),
