@@ -51,9 +51,12 @@ class _AddSeatsState extends State<AddSeats> {
                     for (var i = 0; i < snapshot.data.documents.length; i++) {
                       users.add(
                         DropdownMenuItem(
-                          child: Text(snapshot.data.documents[i]['name'] +
-                              " => " +
-                              snapshot.data.documents[i]['phone']),
+                          child: Text(
+                            snapshot.data.documents[i]['name'] +
+                                " => " +
+                                snapshot.data.documents[i]['phone'],
+                            textDirection: TextDirection.rtl,
+                          ),
                           value: snapshot.data.documents[i]['phone'],
                         ),
                       );
@@ -84,6 +87,16 @@ class _AddSeatsState extends State<AddSeats> {
                       msgErr = 'أكتب رقم الجلسة';
                     } else {
                       msgErr = null;
+                      String workerName;
+                      final QuerySnapshot result = await Firestore.instance
+                          .collection('manager')
+                          .getDocuments();
+                      final List<DocumentSnapshot> documents = result.documents;
+                      documents.forEach((data) {
+                        if (user == data['phone']) {
+                          workerName = data['name'];
+                        }
+                      });
 
                       await Firestore.instance
                           .collection('seats')
@@ -98,6 +111,7 @@ class _AddSeatsState extends State<AddSeats> {
                             'userphone': '',
                             'time': '',
                             'worker': user,
+                            'workerName': workerName
                           }
                         ]),
                       });
