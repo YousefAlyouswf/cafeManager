@@ -39,26 +39,26 @@ class _CafesScreenState extends State<CafesScreen> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {},
       onResume: (Map<String, dynamic> message) async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Services(
-              cafeName: widget.cafeName,
-              phone: widget.phone,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Services(
+        //       cafeName: widget.cafeName,
+        //       phone: widget.phone,
+        //     ),
+        //   ),
+        // );
       },
       onLaunch: (Map<String, dynamic> message) async {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Services(
-              cafeName: widget.cafeName,
-              phone: widget.phone,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Services(
+        //       cafeName: widget.cafeName,
+        //       phone: widget.phone,
+        //     ),
+        //   ),
+        // );
       },
     );
   }
