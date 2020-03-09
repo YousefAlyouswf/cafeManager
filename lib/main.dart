@@ -20,7 +20,6 @@ class _MyAppState extends State<MyApp> {
   Future<String> isLogined() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String isLogin = prefs.getString('cafeName');
-    String userID = prefs.getString('userID');
     phone = prefs.getString('phone');
     //-------------- For firebase notifications
 
@@ -36,23 +35,26 @@ class _MyAppState extends State<MyApp> {
       return;
     });
 
-    FirebaseMessaging().getToken().then((token) {
-      print('token: $token');
-      Firestore.instance
-          .collection('manager')
-          .document(userID)
-          .updateData({'pushToken': token});
-    }).catchError((err) {});
-
 //-----------------END
     return isLogin;
   }
 
   @override
   void initState() {
-    isLogined().then((onValue) {
+    isLogined().then((onValue) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         cafeName = onValue;
+        if (cafeName != null ) {
+          String userID = prefs.getString('userID');
+          FirebaseMessaging().getToken().then((token) {
+            print('token: $token');
+            Firestore.instance
+                .collection('manager')
+                .document(userID)
+                .updateData({'pushToken': token});
+          }).catchError((err) {});
+        }
       });
     });
     super.initState();
