@@ -12,12 +12,12 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   List<String> services = ['أظافة مقهى', 'عدد المقاهي', 'المستخدمين'];
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
         title: Text("الإدارة العامة"),
       ),
       body: GridView.builder(

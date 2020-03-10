@@ -15,11 +15,18 @@ class _AddCafeState extends State<AddCafe> {
   String long;
   String city;
   File _image;
-
+  bool isSuccess = false;
   String url;
+  String managerName;
+  String password;
+  String phone;
 
   final CollectionReference collectionReference =
       Firestore.instance.collection('cafes');
+  final CollectionReference collectionReferenceAddManager =
+      Firestore.instance.collection('manager');
+  final CollectionReference collectionReferenceAddSeat =
+      Firestore.instance.collection('seats');
 
   Future updateSection(String name, String image) async {
     await collectionReference.document().setData({
@@ -29,8 +36,23 @@ class _AddCafeState extends State<AddCafe> {
       'reviewcount': '1',
       'lat': lat,
       'long': long,
-      'city':city
+      'city': city
     });
+  }
+
+  Future addManager(
+      String name, String managerName, String password, String phone) async {
+    await collectionReferenceAddManager.document().setData({
+      'cafe': name,
+      'name': managerName,
+      'password': password,
+      'phone': phone,
+      'pushToken': ''
+    });
+  }
+
+  Future addSeats() async {
+    collectionReferenceAddSeat.document(cafeName).setData({'code':'1'});
   }
 
   Future uploadImage() async {
@@ -43,6 +65,9 @@ class _AddCafeState extends State<AddCafe> {
 
     if (url.isNotEmpty) {
       updateSection(cafeName, url);
+      addManager(cafeName, managerName, password, phone);
+      addSeats();
+
       // firestoreService.UpdateSection(sectionName, url);
       // Fluttertoast.showToast(
       //     msg: "تمت أظافة القسم",
@@ -67,16 +92,17 @@ class _AddCafeState extends State<AddCafe> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
         title: Text("الإدارة العامة"),
       ),
       body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Container(
-          child: Column(
-            
-            children: <Widget>[
-                 Row(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -124,11 +150,13 @@ class _AddCafeState extends State<AddCafe> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'أسم المقهى',
-                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                      suffixIcon: Icon(Icons.local_cafe),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
                 ),
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextFormField(
                     onChanged: (val) {
@@ -141,7 +169,9 @@ class _AddCafeState extends State<AddCafe> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'المدينة ',
-                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                      suffixIcon: Icon(Icons.location_city),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
                 ),
@@ -158,7 +188,9 @@ class _AddCafeState extends State<AddCafe> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'موقع المقهى LAT',
-                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                      suffixIcon: Icon(Icons.location_on),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
                 ),
@@ -175,11 +207,69 @@ class _AddCafeState extends State<AddCafe> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'موقع المقهى LONG',
-                      hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                      suffixIcon: Icon(Icons.location_on),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
                 ),
-             
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        managerName = val;
+                      });
+                    },
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'أسم المدير',
+                      suffixIcon: Icon(Icons.person),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        phone = val;
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'رقم الجوال',
+                      suffixIcon: Icon(Icons.phone_iphone),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
+                        password = val;
+                      });
+                    },
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'كلمة المرور',
+                      suffixIcon: Icon(Icons.lock),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
+                ),
                 RaisedButton(
                     child: Text(
                       "إنشاء",
@@ -188,14 +278,14 @@ class _AddCafeState extends State<AddCafe> {
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(18.0),
                     ),
-                    color: Colors.pink[400],
+                    color: Colors.green[400],
                     onPressed: () async {
                       uploadImage();
                     })
-            ],
+              ],
+            ),
           ),
         ),
-              ),
       ),
     );
   }
