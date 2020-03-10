@@ -224,6 +224,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                       'userphone': userphone,
                                                       'time': time,
                                                       'worker': widget.phone,
+                                                      'workerName': workerName,
                                                     }
                                                   ]),
                                                 });
@@ -241,6 +242,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                       'userphone': '',
                                                       'time': '',
                                                       'worker': widget.phone,
+                                                      'workerName': workerName,
                                                     }
                                                   ]),
                                                 });
