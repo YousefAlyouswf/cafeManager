@@ -219,7 +219,7 @@ class _DeleteAcountState extends State<DeleteAcount> {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
-              child: new Text("حذف الجلسات"),
+              child: new Text("حذف الجلسات والموظف"),
               onPressed: () {
                 Firestore.instance.collection('manager').document(id).delete();
 

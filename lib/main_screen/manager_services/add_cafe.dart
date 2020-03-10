@@ -52,7 +52,10 @@ class _AddCafeState extends State<AddCafe> {
   }
 
   Future addSeats() async {
-    collectionReferenceAddSeat.document(cafeName).setData({'code':'1'});
+    collectionReferenceAddSeat.document(cafeName).setData({
+      'code': '1',
+      'password': '1',
+    });
   }
 
   Future uploadImage() async {
