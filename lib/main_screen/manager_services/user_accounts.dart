@@ -6,6 +6,7 @@ class UsersAccounts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("حسابات المستخدمين"),
       ),
       body: StreamBuilder(

@@ -16,6 +16,7 @@ class _CodeChangeState extends State<CodeChange> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("تغيير الرمز"),
         centerTitle: true,
       ),
@@ -48,6 +49,7 @@ class _CodeChangeState extends State<CodeChange> {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'أكتب الرمز الجديد',
+                                suffixIcon: Icon(Icons.security),
                                 hintStyle: TextStyle(
                                     color: Colors.grey, fontFamily: 'topaz'),
                               ),
@@ -57,6 +59,7 @@ class _CodeChangeState extends State<CodeChange> {
                                 });
                               },
                             ),
+                            SizedBox(height: 40,),
                             Builder(
                               builder: (BuildContext context) {
                                 return RaisedButton(
@@ -81,7 +84,8 @@ class _CodeChangeState extends State<CodeChange> {
                                         .showSnackBar(mySnackBar);
                                   },
                                   child: Text(
-                                    "إظافة",
+                                    "تغيير",
+                                    textDirection: TextDirection.rtl,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 22),
                                   ),
@@ -89,7 +93,7 @@ class _CodeChangeState extends State<CodeChange> {
                                     borderRadius:
                                         new BorderRadius.circular(18.0),
                                   ),
-                                  color: Colors.pink[400],
+                                  color: Colors.green[400],
                                 );
                               },
                             )

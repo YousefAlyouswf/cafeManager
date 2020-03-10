@@ -26,8 +26,11 @@ class _OrderUpdateState extends State<OrderUpdate>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+ 
       appBar: AppBar(
-        title: Text("تعديل الطلبات"),
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
+        title: Text("حذف الطلبات"),
         bottom: TabBar(
           labelStyle: TextStyle(fontSize: 20, fontFamily: 'topaz'),
           labelColor: Colors.white,

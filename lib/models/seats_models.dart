@@ -6,7 +6,8 @@ class SeatsModels {
   String userPhone;
   String time;
   String name;
+  String wrokerName;
 
   SeatsModels(this.color, this.seat, this.userID, this.userName, this.userPhone,
-      this.time, this.name);
+      this.time, this.name, this.wrokerName);
 }

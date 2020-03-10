@@ -72,8 +72,6 @@ class _CafesScreenState extends State<CafesScreen> {
     });
   }
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -96,6 +94,7 @@ class _CafesScreenState extends State<CafesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("مقهى ${widget.cafeName} ${widget.phone}"),
         centerTitle: true,
         actions: <Widget>[
@@ -121,92 +120,95 @@ class _CafesScreenState extends State<CafesScreen> {
         itemCount: services.length,
         itemBuilder: (context, index) {
           if (index == 0) {
-            cardColor = Colors.red[300];
+            cardColor = Colors.green[300];
           } else if (index == 1) {
-            cardColor = Colors.red[300];
+            cardColor = Colors.green[300];
           } else {
             cardColor = Colors.grey;
           }
-          return InkWell(
-            onTap: () {
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Services(
-                      cafeName: widget.cafeName,
-                      phone: widget.phone,
+          return Card(
+            child: InkWell(
+              onTap: () {
+                if (index == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Services(
+                        cafeName: widget.cafeName,
+                        phone: widget.phone,
+                      ),
                     ),
-                  ),
-                );
-              } else if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AllSeats(
-                      cafeName: widget.cafeName,
-                      phone: widget.phone,
+                  );
+                } else if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AllSeats(
+                        cafeName: widget.cafeName,
+                        phone: widget.phone,
+                        
+                      ),
                     ),
-                  ),
-                );
-              } else if (index == 2) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddSeats(
-                      cafeName: widget.cafeName,
+                  );
+                } else if (index == 2) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddSeats(
+                        cafeName: widget.cafeName,
+                      ),
                     ),
-                  ),
-                );
-              } else if (index == 3) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddOrders(
-                      cafeName: widget.cafeName,
+                  );
+                } else if (index == 3) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddOrders(
+                        cafeName: widget.cafeName,
+                      ),
                     ),
-                  ),
-                );
-              } else if (index == 4) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OrderUpdate(
-                      cafeName: widget.cafeName,
+                  );
+                } else if (index == 4) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderUpdate(
+                        cafeName: widget.cafeName,
+                      ),
                     ),
-                  ),
-                );
-              } else if (index == 5) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CodeChange(
-                      cafeName: widget.cafeName,
+                  );
+                } else if (index == 5) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CodeChange(
+                        cafeName: widget.cafeName,
+                      ),
                     ),
+                  );
+                } else if (index == 6) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddAccount(cafeName: widget.cafeName)),
+                  );
+                } else if (index == 7) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DeleteAcount(cafeName: widget.cafeName)),
+                  );
+                }
+              },
+              child: Card(
+                color: cardColor,
+                child: Center(
+                  child: Text(
+                    services[index],
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                   ),
-                );
-              } else if (index == 6) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          AddAccount(cafeName: widget.cafeName)),
-                );
-              } else if (index == 7) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          DeleteAcount(cafeName: widget.cafeName)),
-                );
-              }
-            },
-            child: Card(
-              color: cardColor,
-              child: Center(
-                child: Text(
-                  services[index],
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
                 ),
               ),
             ),

@@ -75,6 +75,7 @@ class _FirestoreOrderState extends State<FirestoreOrder> {
                   splashColor: Colors.purple,
                   child: Container(
                     child: Card(
+                      color: Colors.red[100],
                       child: Column(
                         children: <Widget>[
                           Center(

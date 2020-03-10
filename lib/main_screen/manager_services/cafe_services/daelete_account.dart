@@ -41,6 +41,8 @@ class _DeleteAcountState extends State<DeleteAcount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
         title: Text("معلومات الموظفين"),
       ),
       body: Padding(
@@ -62,16 +64,18 @@ class _DeleteAcountState extends State<DeleteAcount> {
 
                   return InkWell(
                     onTap: () async {
-                      List<String> seatThisWorker = new List();
+                      List<int> seatThisWorker = new List();
                       for (var i = 0; i < seatsList.length; i++) {
                         if (seatsList[i].phone == service['phone']) {
-                          seatThisWorker.add(seatsList[i].seat);
+                          seatThisWorker.add(int.parse(seatsList[i].seat));
                         }
                       }
+                      seatThisWorker.sort();
+
                       showBottomSheet(
                           context: context,
                           builder: (context) => Container(
-                                color: Colors.blue[100],
+                                color: Colors.red[100],
                                 width: double.infinity,
                                 height:
                                     MediaQuery.of(context).size.height * 0.5,
@@ -108,7 +112,7 @@ class _DeleteAcountState extends State<DeleteAcount> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          "الجلسات" ,
+                                          "الجلسات",
                                           textDirection: TextDirection.rtl,
                                           style: TextStyle(fontSize: 18),
                                         ),
@@ -117,7 +121,8 @@ class _DeleteAcountState extends State<DeleteAcount> {
                                         child: GridView.builder(
                                           itemCount: seatThisWorker.length,
                                           itemBuilder: (context, index) {
-                                            return Text(seatThisWorker[index]);
+                                            return Text(seatThisWorker[index]
+                                                .toString());
                                           },
                                           gridDelegate:
                                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -128,19 +133,23 @@ class _DeleteAcountState extends State<DeleteAcount> {
                                           ),
                                         ),
                                       ),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.delete_forever,
-                                            size: 40,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            Firestore.instance
-                                                .collection('manager')
-                                                .document(service.documentID)
-                                                .delete();
-                                            Navigator.of(context).pop();
-                                          })
+                                      Center(
+                                        child: IconButton(
+                                            icon: Icon(
+                                              Icons.delete_forever,
+                                              size: 40,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              _showDialog(
+                                                service.documentID,
+                                                seatThisWorker.length,
+                                                seatThisWorker,
+                                                service['phone'],
+                                                service['name'],
+                                              );
+                                            }),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -151,6 +160,7 @@ class _DeleteAcountState extends State<DeleteAcount> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
+                          color: Colors.green[100],
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -190,6 +200,62 @@ class _DeleteAcountState extends State<DeleteAcount> {
           },
         ),
       ),
+    );
+  }
+
+  void _showDialog(
+      String id, int list, List seatNum, String worker, String workerName) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Center(child: new Text("تأكيد")),
+          content: new Text(
+            "هل تريد حذف معلومات الموظف فقط أو حذف الجلسات بأسم الموظف",
+            textDirection: TextDirection.rtl,
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("حذف الجلسات"),
+              onPressed: () {
+                Firestore.instance.collection('manager').document(id).delete();
+
+                for (var i = 0; i < list; i++) {
+                  Firestore.instance
+                      .collection('seats')
+                      .document(widget.cafeName)
+                      .updateData({
+                    'allseats': FieldValue.arrayRemove([
+                      {
+                        'seat': seatNum[i].toString(),
+                        'color': 'green',
+                        'userid': '',
+                        'username': '',
+                        'userphone': '',
+                        'time': '',
+                        'worker': worker,
+                        'workerName': workerName,
+                      }
+                    ]),
+                  });
+                }
+
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("حذف الموظف فقط"),
+              onPressed: () {
+                Firestore.instance.collection('manager').document(id).delete();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

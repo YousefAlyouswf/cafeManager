@@ -19,6 +19,7 @@ class _AddAcountState extends State<AddAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("إظافة طلبات"),
         centerTitle: true,
       ),
@@ -33,6 +34,7 @@ class _AddAcountState extends State<AddAccount> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'أسم الموظف',
+                  suffixIcon: Icon(Icons.person),
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
                 onChanged: (val) {
@@ -47,6 +49,7 @@ class _AddAcountState extends State<AddAccount> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'رقم الجوال',
+                  suffixIcon: Icon(Icons.phone_android),
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
                 onChanged: (val) {
@@ -61,6 +64,7 @@ class _AddAcountState extends State<AddAccount> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'كلمة المرور',
+                  suffixIcon: Icon(Icons.lock_outline),
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
                 onChanged: (val) {
@@ -85,7 +89,7 @@ class _AddAcountState extends State<AddAccount> {
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(18.0),
                     ),
-                    color: Colors.pink[400],
+                    color: Colors.green[400],
                     onPressed: () async {
                       final QuerySnapshot result = await Firestore.instance
                           .collection('manager')
@@ -116,7 +120,7 @@ class _AddAcountState extends State<AddAccount> {
                       } else {
                         SnackBar mySnackBar = SnackBar(
                           content: Text(
-                           errMsg,
+                            errMsg,
                             textAlign: TextAlign.end,
                             style: TextStyle(fontSize: 24),
                           ),

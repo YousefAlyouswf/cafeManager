@@ -15,6 +15,8 @@ class _AllSeatsState extends State<AllSeats> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
+        centerTitle: true,
         title: Text("الجلسات"),
       ),
       body: Padding(
@@ -39,6 +41,7 @@ class _AllSeatsState extends State<AllSeats> {
                     snapshot.data['allseats'][i]['userphone'],
                     snapshot.data['allseats'][i]['time'],
                     snapshot.data['allseats'][i]['worker'],
+                    snapshot.data['allseats'][i]['workerName'],
                   ));
                 }
               }
@@ -65,6 +68,7 @@ class _AllSeatsState extends State<AllSeats> {
                   String username = seatsModels[index].userName.toString();
                   String userphone = seatsModels[index].userPhone.toString();
                   String time = seatsModels[index].time.toString();
+                  String workerName = seatsModels[index].wrokerName.toString();
                   return InkWell(
                     onTap: isbooked
                         ? () async {
@@ -81,6 +85,7 @@ class _AllSeatsState extends State<AllSeats> {
                                   'userphone': '',
                                   'time': '',
                                   'worker': widget.phone,
+                                  'workerName': workerName,
                                 }
                               ]),
                             });
@@ -97,6 +102,7 @@ class _AllSeatsState extends State<AllSeats> {
                                   'userphone': widget.phone,
                                   'time': '',
                                   'worker': widget.phone,
+                                  'workerName': workerName,
                                 }
                               ]),
                             });
@@ -181,6 +187,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                       'userphone': userphone,
                                                       'time': time,
                                                       'worker': widget.phone,
+                                                      'workerName': workerName,
                                                     }
                                                   ]),
                                                 });
@@ -198,6 +205,7 @@ class _AllSeatsState extends State<AllSeats> {
                                                       'userphone': '',
                                                       'time': '',
                                                       'worker': widget.phone,
+                                                      'workerName': workerName,
                                                     }
                                                   ]),
                                                 });
@@ -250,7 +258,8 @@ class _AllSeatsState extends State<AllSeats> {
                                                         .collection('faham')
                                                         .getDocuments();
                                                 final List<DocumentSnapshot>
-                                                    documents = result.documents;
+                                                    documents =
+                                                    result.documents;
                                                 documents.forEach(
                                                   (data) {
                                                     String cafeNameOrder =

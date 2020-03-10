@@ -15,6 +15,7 @@ class _ServicesState extends State<Services> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("الخدمات"),
         centerTitle: true,
       ),
@@ -36,21 +37,26 @@ class _ServicesState extends State<Services> {
                   DocumentSnapshot service = snapshot.data.documents[index];
                   return service['cafename'] == widget.cafeName &&
                           service['worker'] == widget.phone
-                      ? Card(
-                          child: ListTile(
-                            trailing: Text(
-                              "جلسة رقم: " + service['seatnum'],
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(fontSize: 24),
+                      ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          color: Colors.red[100],
+                            child: ListTile(
+                              trailing: Text(
+                                "جلسة رقم: -> " + service['seatnum'],
+                                textDirection: TextDirection.rtl,
+                                style: TextStyle(fontSize: 24),
+                              ),
+                              subtitle: Text(service['username']),
+                              onLongPress: () {
+                                Firestore.instance
+                                    .collection('faham')
+                                    .document(service.documentID)
+                                    .delete();
+                              },
                             ),
-                            onLongPress: () {
-                              Firestore.instance
-                                  .collection('faham')
-                                  .document(service.documentID)
-                                  .delete();
-                            },
                           ),
-                        )
+                      )
                       : null;
                 },
               );

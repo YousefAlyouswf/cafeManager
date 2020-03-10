@@ -19,6 +19,7 @@ class _AddOrdersState extends State<AddOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[900],
         title: Text("إظافة طلبات"),
         centerTitle: true,
       ),
@@ -33,6 +34,7 @@ class _AddOrdersState extends State<AddOrders> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'أسم الطلب',
+                  suffixIcon: Icon(Icons.list),
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
                 onChanged: (val) {
@@ -47,6 +49,7 @@ class _AddOrdersState extends State<AddOrders> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'سعر الطلب',
+                  suffixIcon: Icon(Icons.attach_money),
                   hintStyle: TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                 ),
                 onChanged: (val) {
@@ -94,7 +97,7 @@ class _AddOrdersState extends State<AddOrders> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 40,
               ),
               Builder(
                 builder: (BuildContext context) {
@@ -106,7 +109,7 @@ class _AddOrdersState extends State<AddOrders> {
                       shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(18.0),
                       ),
-                      color: Colors.pink[400],
+                      color: Colors.green[400],
                       onPressed: () async {
                         if (orderName == null || orderName=='') {
                           msgErr = 'أكتب أسم الطلب';
