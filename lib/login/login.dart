@@ -103,69 +103,86 @@ class _LoginState extends State<Login> {
                             level = f['cafe'];
                             userID = f.documentID;
                           });
-                          if (documents.length == 1) {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString("cafeName", level);
-                            prefs.setString("phone", phone);
-                            prefs.setString('userID', userID);
-                            if (level == 'مدير') {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) {
-                                    return MainScreen();
-                                  },
-                                ),
-                              );
-                            } else {
-//-------------- For firebase notifications
-
-                              FirebaseMessaging()
-                                  .requestNotificationPermissions();
-
-                              FirebaseMessaging().configure(
-                                  onMessage: (Map<String, dynamic> message) {
-                                return;
-                              }, onResume: (Map<String, dynamic> message) {
-                                print('onResume: $message');
-                                return;
-                              }, onLaunch: (Map<String, dynamic> message) {
-                                print('onLaunch: $message');
-                                return;
-                              });
-
-                              FirebaseMessaging().getToken().then((token) {
-                                print('token: $token');
-                                Firestore.instance
-                                    .collection('manager')
-                                    .document(userID)
-                                    .updateData({'pushToken': token});
-                              }).catchError((err) {});
-
-//-----------------END
-
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) {
-                                    return CafesScreen(
-                                      cafeName: level,
-                                      phone: phone,
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          } else {
-                            print("Error");
+                          if (password.isEmpty ||
+                              password == '' ||
+                              password == null ||
+                              phone == '' ||
+                              phone == null ||
+                              phone.isEmpty) {
                             Scaffold.of(context).showSnackBar(SnackBar(
                               backgroundColor: Colors.red[900],
                               content: Text(
-                                'البيانات غير صحيحة',
+                                'يوجد حقل فارغ',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(fontSize: 18),
                               ),
                               duration: Duration(seconds: 3),
                             ));
+                          } else {
+                            if (documents.length == 1) {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setString("cafeName", level);
+                              prefs.setString("phone", phone);
+                              prefs.setString('userID', userID);
+                              if (level == 'مدير') {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return MainScreen();
+                                    },
+                                  ),
+                                );
+                              } else {
+//-------------- For firebase notifications
+
+                                FirebaseMessaging()
+                                    .requestNotificationPermissions();
+
+                                FirebaseMessaging().configure(
+                                    onMessage: (Map<String, dynamic> message) {
+                                  return;
+                                }, onResume: (Map<String, dynamic> message) {
+                                  print('onResume: $message');
+                                  return;
+                                }, onLaunch: (Map<String, dynamic> message) {
+                                  print('onLaunch: $message');
+                                  return;
+                                });
+
+                                FirebaseMessaging().getToken().then((token) {
+                                  print('token: $token');
+                                  Firestore.instance
+                                      .collection('manager')
+                                      .document(userID)
+                                      .updateData({'pushToken': token});
+                                }).catchError((err) {});
+
+//-----------------END
+
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return CafesScreen(
+                                        cafeName: level,
+                                        phone: phone,
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                            } else {
+                              print("Error");
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.red[900],
+                                content: Text(
+                                  'البيانات غير صحيحة',
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                duration: Duration(seconds: 3),
+                              ));
+                            }
                           }
                         },
                         splashColor: Colors.red,
