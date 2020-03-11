@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'manager_services/cafe_services/change_password.dart';
 import 'manager_services/cafe_services/code_change.dart';
+import 'manager_services/cafe_services/help.dart';
 
 class CafesScreen extends StatefulWidget {
   final String cafeName;
@@ -90,6 +91,7 @@ class _CafesScreenState extends State<CafesScreen> {
     'إظافة حساب',
     'معلومات الموظفين',
     'تغيير كلمة المرور',
+    'للمساعدة',
   ];
   Color cardColor;
 
@@ -147,6 +149,8 @@ class _CafesScreenState extends State<CafesScreen> {
                     cardColor = Colors.green[300];
                   } else if (index == 1) {
                     cardColor = Colors.green[300];
+                  } else if (index == 9) {
+                    cardColor = Colors.red[50];
                   } else {
                     cardColor = Colors.grey;
                   }
@@ -251,6 +255,11 @@ class _CafesScreenState extends State<CafesScreen> {
                                         cafeName: widget.cafeName)),
                               );
                           });
+                        } else if (index == 9) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Help()),
+                          );
                         }
                       },
                       child: Card(

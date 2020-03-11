@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'manager_services/add_cafe.dart';
 import 'manager_services/cafe_list.dart';
+import 'manager_services/view_contact.dart';
 import 'manager_services/user_accounts.dart';
 
 class MainScreen extends StatefulWidget {
@@ -10,7 +11,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<String> services = ['أظافة مقهى', 'عدد المقاهي', 'المستخدمين'];
+  List<String> services = [
+    'أظافة مقهى',
+    'عدد المقاهي',
+    'المستخدمين',
+    'أرقام التواصل'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +46,11 @@ class _MainScreenState extends State<MainScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => UsersAccounts()),
+                );
+              } else if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewContact()),
                 );
               }
             },
