@@ -20,6 +20,7 @@ class _AddCafeState extends State<AddCafe> {
   String managerName;
   String password;
   String phone;
+  String branch;
 
   final CollectionReference collectionReference =
       Firestore.instance.collection('cafes');
@@ -36,12 +37,14 @@ class _AddCafeState extends State<AddCafe> {
       'reviewcount': '1',
       'lat': lat,
       'long': long,
-      'city': city
+      'city': city,
+      'branch': branch,
     });
   }
 
   Future addManager(
       String name, String managerName, String password, String phone) async {
+        
     await collectionReferenceAddManager.document().setData({
       'cafe': name,
       'name': managerName,
@@ -164,6 +167,25 @@ class _AddCafeState extends State<AddCafe> {
                   child: TextFormField(
                     onChanged: (val) {
                       setState(() {
+                        branch = val;
+                      });
+                    },
+                    keyboardType: TextInputType.text,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'فرع المقهى',
+                      suffixIcon: Icon(Icons.local_convenience_store),
+                      hintStyle:
+                          TextStyle(color: Colors.grey, fontFamily: 'topaz'),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      setState(() {
                         city = val;
                       });
                     },
@@ -215,6 +237,10 @@ class _AddCafeState extends State<AddCafe> {
                           TextStyle(color: Colors.grey, fontFamily: 'topaz'),
                     ),
                   ),
+                ),
+                Container(
+                  color: Colors.black,
+                  height: 1,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
