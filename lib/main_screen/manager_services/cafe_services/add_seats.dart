@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+
 class AddSeats extends StatefulWidget {
   final String cafeName;
 
@@ -119,8 +120,6 @@ class _AddSeatsState extends State<AddSeats> {
                             {
                               'seat': seatNum,
                               'color': 'green',
-                              'userid': '',
-                              'username': '',
                               'userphone': '',
                               'time': '',
                               'worker': user,
@@ -170,4 +169,6 @@ class _AddSeatsState extends State<AddSeats> {
       ),
     );
   }
+
+
 }

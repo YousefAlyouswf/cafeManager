@@ -64,8 +64,7 @@ class _AllSeatsState extends State<AllSeats> {
                   }
 
                   String seatNum = seatsModels[index].seat.toString();
-                  String userid = seatsModels[index].userID.toString();
-                  String username = seatsModels[index].userName.toString();
+
                   String userphone = seatsModels[index].userPhone.toString();
                   String time = seatsModels[index].time.toString();
                   String workerName = seatsModels[index].wrokerName.toString();
@@ -80,8 +79,6 @@ class _AllSeatsState extends State<AllSeats> {
                                 {
                                   'seat': seatNum,
                                   'color': 'green',
-                                  'userid': '',
-                                  'username': '',
                                   'userphone': '',
                                   'time': '',
                                   'worker': widget.phone,
@@ -97,9 +94,7 @@ class _AllSeatsState extends State<AllSeats> {
                                 {
                                   'seat': seatNum,
                                   'color': 'grey',
-                                  'userid': 'تم حجزها من الموظف',
-                                  'username': 'تم حجزها من الموظف',
-                                  'userphone': widget.phone,
+                                  'userphone': 'تم حجزها من الموظف',
                                   'time': '',
                                   'worker': widget.phone,
                                   'workerName': workerName,
@@ -126,16 +121,6 @@ class _AllSeatsState extends State<AllSeats> {
                                       children: <Widget>[
                                         Text(
                                           "رقم الجلسة: " + seatNum,
-                                          textDirection: TextDirection.rtl,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Text(
-                                          "الأسم: " + username,
                                           textDirection: TextDirection.rtl,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -182,8 +167,6 @@ class _AllSeatsState extends State<AllSeats> {
                                                     {
                                                       'seat': seatNum,
                                                       'color': 'grey',
-                                                      'userid': userid,
-                                                      'username': username,
                                                       'userphone': userphone,
                                                       'time': time,
                                                       'worker': widget.phone,
@@ -200,8 +183,6 @@ class _AllSeatsState extends State<AllSeats> {
                                                     {
                                                       'seat': seatNum,
                                                       'color': 'green',
-                                                      'userid': '',
-                                                      'username': '',
                                                       'userphone': '',
                                                       'time': '',
                                                       'worker': widget.phone,
@@ -219,8 +200,6 @@ class _AllSeatsState extends State<AllSeats> {
                                                     {
                                                       'seat': seatNum,
                                                       'color': 'grey',
-                                                      'userid': userid,
-                                                      'username': username,
                                                       'userphone': userphone,
                                                       'time': time,
                                                       'worker': widget.phone,
@@ -237,22 +216,12 @@ class _AllSeatsState extends State<AllSeats> {
                                                     {
                                                       'seat': seatNum,
                                                       'color': 'green',
-                                                      'userid': '',
-                                                      'username': '',
                                                       'userphone': '',
                                                       'time': '',
                                                       'worker': widget.phone,
                                                       'workerName': workerName,
                                                     }
                                                   ]),
-                                                });
-                                                await Firestore.instance
-                                                    .collection('users')
-                                                    .document(userid)
-                                                    .updateData({
-                                                  'booked': '',
-                                                  'cafename': '',
-                                                  'seatid': '',
                                                 });
 
                                                 final QuerySnapshot result =
